@@ -80,6 +80,11 @@ STATICFILES_DIRS = (
 
 import socket
 
-apikey = os.environ['HOSTEDGRAPHITE_APIKEY']
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.sendto("%s.request.time 1444\n" % apikey, ("carbon.hostedgraphite.com", 2003))
+try:
+    apikey = os.environ['HOSTEDGRAPHITE_APIKEY']
+except KeyError:
+    pass
+else:
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.sendto("%s.request.time 1444\n" % apikey, ("carbon.hostedgraphite.com", 2003))
+    sock.close()
