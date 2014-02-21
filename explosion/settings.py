@@ -77,3 +77,9 @@ STATIC_ROOT = 'staticfiles'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+import socket
+
+apikey = os.environ['HOSTEDGRAPHITE_APIKEY']
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.sendto("%s.request.time 1444\n" % apikey, ("carbon.hostedgraphite.com", 2003))
