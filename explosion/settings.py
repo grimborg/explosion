@@ -51,9 +51,20 @@ WSGI_APPLICATION = 'explosion.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(default='postgres://explosion:explosion@localhost/explosion')
-}
+if 'PG_USER' in os.environ:
+    DATABASES = {
+      'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'test',
+        'USER': os.environ.get('PG_USER'),
+        'PASSWORD': os.environ.get('PG_PASSWORD'),
+        'HOST': '127.0.0.1',
+      }
+    }
+else:
+    DATABASES = {
+        'default': dj_database_url.config(default='postgres://explosion:explosion@localhost/explosion')
+    }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
